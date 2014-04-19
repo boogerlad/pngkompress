@@ -8,25 +8,18 @@ if [[ `pngout -l $1` =~ /c3.*/d([0-9]+) ]]
 then
 	bitdepth=${BASH_REMATCH[1]}
 	basename=`basename $1`
-	mkdir /tmp/$basename
-	cp $1 /tmp/$basename/$basename #1
-	pngout -c6 -s4 -y -force "$1" "/tmp/$basename/expand-$basename"
-
-	pngout -c3 -d$bitdepth -n1 -y "/tmp/$basename/expand-$basename"
-	pngout -c3 -d$bitdepth -n2 -y "/tmp/$basename/expand-$basename"
-	pngout -c3 -d$bitdepth -n3 -y "/tmp/$basename/expand-$basename"
-	pngout -c3 -d$bitdepth -n4 -y "/tmp/$basename/expand-$basename" #2
-
-	pngout -f6 -kp -ks -y -force "$1" "/tmp/$basename/comp-$basename" #3
-	smallest=`ls -Sr1 /tmp/$basename/ | head -n 1`
-	echo $smallest
-	echo $basename
-	if [[ $smallest == $basename]]
+	pngout -f6 -kp -ks -y -force "$1" "$1.tmp.png"
+	pngout -c6 -s4 -y -force "$1"
+	pngout -c3 -d$bitdepth -n1 -y "$1"
+	pngout -c3 -d$bitdepth -n2 -y "$1"
+	pngout -c3 -d$bitdepth -n3 -y "$1"
+	pngout -c3 -d$bitdepth -n4 -y "$1"
+	if [[ `stat -c%s $1.tmp.png` < `stat -c%s $1` ]]
 	then
-		echo "WOW!!!!!!!!!!"
+		mv "$1.tmp.png" "$1"
+	else
+		rm "$1.tmp.png"
 	fi
-	mv "/tmp/$basename/$smallest" "$1"
-	rm -rf /tmp/$basename
 fi
 advdef -z -4 -i 30 "$1"
 
