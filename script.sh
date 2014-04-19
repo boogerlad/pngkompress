@@ -7,7 +7,6 @@ wine pngwolfz --in="$path" --out="$path" --exclude-singles --exclude-heuristic -
 if [[ `pngout -l $1` =~ /c3.*/d([0-9]+) ]]
 then
 	bitdepth=${BASH_REMATCH[1]}
-	basename=`basename $1`
 	pngout -f6 -kp -ks -y -force "$1" "$1.tmp.png"
 	pngout -c6 -s4 -y -force "$1"
 	pngout -c3 -d$bitdepth -n1 -y "$1"
