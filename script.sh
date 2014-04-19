@@ -4,14 +4,14 @@
 
 path=`winepath -w $1`
 wine truepng -f0,5 -i0 -g0 -a1 -md remove all -zc9 -zm9 -zs0-3 -force -y "$path"
-wine pngwolfz --in="$path" --out="$path" --exclude-singles --exclude-heuristic --zlib-level=9 --zlib-memlevel=9 --max-stagnate-time=0 --max-evaluations=1000 --even-if-bigger
+wine pngwolfz --in="$path" --out="$path" --exclude-singles --exclude-heuristic --zlib-level=9 --zlib-memlevel=9 --max-stagnate-time=0 --max-evaluations=1 --even-if-bigger
 
 if [[ `pngout -l $1` =~ /c3.*/d([0-9]+) ]]
 then
 	bitdepth=${BASH_REMATCH[1]}
 	basename=`basename $1` #0
 	mkdir /tmp/$basename
-	# cp $1 /tmp/$basename/$basename
+	cp $1 /tmp/$basename/$basename
 	pngout -c6 -s4 -y -force "$1" "/tmp/$basename/expand-$basename" #1
 	pngout -c3 -d$bitdepth -n1 -y "/tmp/$basename/expand-$basename" "/tmp/$basename/n1-$basename" #2
 	pngout -c3 -d$bitdepth -n2 -y "/tmp/$basename/expand-$basename" "/tmp/$basename/n2-$basename" #3
