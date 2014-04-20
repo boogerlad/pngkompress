@@ -2,8 +2,8 @@
 
 cp "$1" "$1.orig"
 path=`winepath -w "$1"`
-wine truepng -f0,5 -i0 -g0 -a1 -md remove all -zc9 -zm3-9 -zs0-3 -force -y "$path"
-./pngwolf --in="$1" --out="$1" --exclude-singles --exclude-heuristic --zlib-level=9 --max-stagnate-time=0 --max-evaluations=1 --even-if-bigger
+wine truepng -f0,5 -i0 -g0 -a1 -md remove all -zc9 -zm9 -zs0-3 -force -y "$path"
+./pngwolf --in="$1" --out="$1" --exclude-singles --exclude-heuristic --zlib-level=9 --zlib-memlevel=9 --max-stagnate-time=0 --max-evaluations=1000 --even-if-bigger
 
 if [[ `pngout -l "$1"` =~ /c3.*/d([0-9]+) ]]
 then
